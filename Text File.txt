@@ -1,0 +1,20 @@
+.skill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.skill .bar {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.skill .bar > i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent), #ff7a59);
+}

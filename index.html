@@ -1,297 +1,288 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tanvir Shahriar — Single Page Animated Portfolio</title>
-  <style>
-    :root{
-      --bg1:#0f1724; --bg2:#1b2540; --accent:#ffd400; --muted:#9aa8c3; --glass: rgba(255,255,255,0.04);
-      --nav-height:72px;
-      --max-width:1100px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;color:#e6eef8;background:linear-gradient(120deg,var(--bg1),var(--bg2));-webkit-font-smoothing:antialiased}
-    /* animated gradient behind everything */
-    body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(600px 400px at 10% 10%, rgba(255,212,64,0.06), transparent), radial-gradient(500px 300px at 90% 90%, rgba(58,123,213,0.05), transparent);animation:moveBG 18s linear infinite}
-    @keyframes moveBG{0%{transform:translateY(0)}50%{transform:translateY(-40px)}100%{transform:translateY(0)}}header{position:sticky;top:0;z-index:50;height:var(--nav-height);display:flex;align-items:center;justify-content:center;padding:8px 20px;backdrop-filter:blur(6px);background:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.08));border-bottom:1px solid rgba(255,255,255,0.03)}
-.nav-inner{width:100%;max-width:var(--max-width);display:flex;align-items:center;gap:20px}
-.brand{font-weight:700;font-size:20px;color:var(--accent);cursor:pointer;padding:8px 12px;border-radius:12px;display:flex;align-items:center;gap:10px}
-.brand .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,#fff, var(--accent));box-shadow:0 6px 20px rgba(255,212,64,0.15);transform:translateY(0);animation:ping 2s infinite}
-@keyframes ping{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
-
-nav{margin-left:auto;display:flex;gap:16px;align-items:center}
-nav a{color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:600;letter-spacing:0.3px;transition:all .28s}
-nav a:hover{color:#fff;transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,0.35)}
-nav a.active{color:var(--accent)}
-
-/* social icons next to header sections when scrolled */
-.socials{display:flex;gap:12px;margin-left:12px}
-.icon{width:36px;height:36px;display:inline-grid;place-items:center;border-radius:8px;background:var(--glass);border:1px solid rgba(255,255,255,0.02);cursor:pointer}
-
-/* Mobile menu */
-.menu-btn{display:none;margin-left:12px;background:transparent;border:none;color:var(--muted);font-weight:700;padding:8px 10px;border-radius:10px}
-.menu-panel{display:none;position:fixed;right:18px;top:calc(var(--nav-height)+10px);background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));backdrop-filter:blur(8px);padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);z-index:60}
-.menu-panel a{display:block;padding:10px 12px}
-
-main{max-width:var(--max-width);margin:32px auto;padding:16px}
-section{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);margin:28px 0;padding:28px;border-radius:18px;box-shadow:0 8px 30px rgba(8,12,20,0.6);position:relative;overflow:hidden}
-.section-title{display:flex;align-items:center;gap:14px}
-.section-title h2{margin:0;font-size:22px;color:#fff;font-weight:800}
-.section-meta{color:var(--muted);font-weight:600}
-
-/* two big yellow bordered boxes (placeholders) */
-.big-boxes{display:flex;gap:18px;margin-top:16px}
-.big-box{flex:1;min-height:160px;border:4px dashed var(--accent);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;justify-content:center;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
-.big-box .label{font-weight:700;color:var(--accent)}
-/* responsive grid for projects/certs/experience */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
-.card{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));transition:transform .35s ease, box-shadow .35s;will-change:transform}
-.card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(2,6,23,0.6)}
-
-/* skills with animated bars */
-.skill{display:flex;align-items:center;gap:12px}
-.skill .bar{height:12px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;flex:1}
-.skill .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#ff7a59);border-radius:10px}
-
-/* floating decorative blobs */
-.blob{position:absolute;border-radius:50%;filter:blur(40px);opacity:0.12;mix-blend-mode:screen}
-.blob.b1{width:260px;height:260px;left:-80px;top:-60px;background:#ffd400}
-.blob.b2{width:200px;height:200px;right:-60px;bottom:-40px;background:#3a7bd5}
-
-/* reveal animations */
-.reveal{opacity:0;transform:translateY(12px);transition:opacity .7s ease, transform .7s ease}
-.reveal.show{opacity:1;transform:translateY(0)}
-
-/* hero */
-.hero{display:flex;gap:24px;align-items:center}
-.hero-card{flex:1;padding:28px;border-radius:16px;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
-.hero-visual{width:360px;height:240px;border-radius:14px;background:linear-gradient(135deg,#0f1724 0%, rgba(255,255,255,0.02) 100%);display:flex;align-items:center;justify-content:center}
-.glow{padding:6px 12px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));}
-
-/* download resume button */
-.btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:0;font-weight:700;cursor:pointer}
-.btn--accent{background:linear-gradient(90deg,var(--accent),#ffd680);color:#081022}
-
-/* mobile responsive */
-@media (max-width:900px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-  nav{display:none}
-  .menu-btn{display:inline-block}
-}
-@media (max-width:600px){
-  .grid{grid-template-columns:1fr}
-  .hero{flex-direction:column}
-  .hero-visual{width:100%;height:180px}
-  .brand{font-size:16px}
-  .big-boxes{flex-direction:column}
-}
-
-/* small touches */
-footer{color:var(--muted);text-align:center;padding:18px}
-
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tanvir Shahriar — Portfolio</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="nav-inner">
-      <div class="brand" id="homeBtn" title="Go home">
-        <span class="dot"></span>
-        Tanvir Shahriar
-      </div><nav id="navLinks">
-    <a href="#who" data-target="who">Who am I</a>
-    <a href="#projects" data-target="projects">Projects</a>
-    <a href="#experience" data-target="experience">Experience</a>
-    <a href="#certs" data-target="certs">Certs</a>
-    <a href="#skill" data-target="skill">Skill</a>
-    <a href="#education" data-target="education">Education</a>
+  <nav class="navbar" data-component="navbar">
+    <div class="navbar-wrapper">
+      <div class="logo-container" data-element="logo">
+        <span class="logo-badge"></span>
+        <h1 class="logo-text">Tanvir Shahriar</h1>
+      </div>
+      
+      <ul class="nav-list" data-element="nav-menu">
+        <li><a href="#about" data-nav-item="about">About</a></li>
+        <li><a href="#work" data-nav-item="work">Work</a></li>
+        <li><a href="#expertise" data-nav-item="expertise">Expertise</a></li>
+        <li><a href="#credentials" data-nav-item="credentials">Credentials</a></li>
+        <li><a href="#qualifications" data-nav-item="qualifications">Qualifications</a></li>
+        <li><a href="#background" data-nav-item="background">Background</a></li>
+      </ul>
+
+      <div class="social-links" data-element="socials">
+        <button class="social-btn" data-social="linkedin" aria-label="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8.5h5V24H0V8.5zm7.5 0h4.8v2.14h.07c.67-1.27 2.3-2.61 4.73-2.61 5.05 0 5.98 3.32 5.98 7.64V24h-5V16.4c0-1.83-.03-4.18-2.55-4.18-2.55 0-2.94 1.99-2.94 4.05V24h-5V8.5z"/></svg>
+        </button>
+        <button class="social-btn" data-social="github" aria-label="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.25.98 11.52c0 4.66 3.02 8.62 7.22 10.02.53.1.72-.23.72-.51 0-.25-.01-.91-.01-1.79-2.94.64-3.56-1.41-3.56-1.41-.48-1.22-1.17-1.55-1.17-1.55-.96-.66.07-.65.07-.65 1.06.07 1.62 1.09 1.62 1.09.94 1.62 2.46 1.15 3.06.88.09-.69.37-1.15.67-1.41-2.35-.27-4.82-1.18-4.82-5.26 0-1.16.41-2.11 1.09-2.86-.11-.27-.48-1.36.1-2.83 0 0 .89-.29 2.92 1.09a10.1 10.1 0 0 1 2.66-.36c.9 0 1.8.12 2.66.36 2.03-1.38 2.92-1.09 2.92-1.09.58 1.47.21 2.56.1 2.83.68.75 1.09 1.7 1.09 2.86 0 4.09-2.48 4.99-4.84 5.25.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .28.19.62.73.51C20 20.14 23 16.18 23 11.52 23 5.25 18.27.5 12 .5z"/></svg>
+        </button>
+      </div>
+
+      <button class="mobile-menu-toggle" data-element="menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 
-  <div class="socials" aria-hidden="true">
-    <!-- Replace hrefs with your LinkedIn / GitHub URLs -->
-    <a class="icon" title="LinkedIn" id="lnk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8.5h5V24H0V8.5zm7.5 0h4.8v2.14h.07c.67-1.27 2.3-2.61 4.73-2.61 5.05 0 5.98 3.32 5.98 7.64V24h-5V16.4c0-1.83-.03-4.18-2.55-4.18-2.55 0-2.94 1.99-2.94 4.05V24h-5V8.5z" fill="white"/></svg></a>
-    <a class="icon" title="GitHub" id="gh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 .5C5.73.5.98 5.25.98 11.52c0 4.66 3.02 8.62 7.22 10.02.53.1.72-.23.72-.51 0-.25-.01-.91-.01-1.79-2.94.64-3.56-1.41-3.56-1.41-.48-1.22-1.17-1.55-1.17-1.55-.96-.66.07-.65.07-.65 1.06.07 1.62 1.09 1.62 1.09.94 1.62 2.46 1.15 3.06.88.09-.69.37-1.15.67-1.41-2.35-.27-4.82-1.18-4.82-5.26 0-1.16.41-2.11 1.09-2.86-.11-.27-.48-1.36.1-2.83 0 0 .89-.29 2.92 1.09a10.1 10.1 0 0 1 2.66-.36c.9 0 1.8.12 2.66.36 2.03-1.38 2.92-1.09 2.92-1.09.58 1.47.21 2.56.1 2.83.68.75 1.09 1.7 1.09 2.86 0 4.09-2.48 4.99-4.84 5.25.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .28.19.62.73.51C20 20.14 23 16.18 23 11.52 23 5.25 18.27.5 12 .5z" fill="white"/></svg></a>
-  </div>
-<button class="menu-btn" id="menuBtn">☰ Menu</button>
-  <div class="menu-panel" id="menuPanel" aria-hidden="true">
-    <a href="#who" data-target="who">Who am I</a>
-    <a href="#projects" data-target="projects">Projects</a>
-    <a href="#experience" data-target="experience">Experience</a>
-    <a href="#certs" data-target="certs">Certs</a>
-    <a href="#skill" data-target="skill">Skill</a>
-    <a href="#education" data-target="education">Education</a>
-  </div>
-</div>
-
-  </header>  <main>
-    <!-- Hero / About -->
-    <section id="who" class="reveal">
-      <div class="blob b1"></div>
-      <div class="blob b2"></div>
-      <div class="hero">
-        <div class="hero-card">
-          <div class="section-title"><h2>Who am I</h2><div class="section-meta">About me • Overview</div></div>
-          <p style="color:var(--muted);margin-top:12px;">Hi — I'm <strong>Tanvir Shahriar</strong>. This is a colorful animated single-page portfolio template. Replace this with your own short bio, goals and contact detail. Use the buttons to download resume or to view projects below.</p>
-          <div style="margin-top:16px;display:flex;gap:10px;align-items:center">
-            <button class="btn btn--accent" id="downloadResume">⬇️ Download Resume</button>
-            <a class="glow" href="#projects" style="text-decoration:none;color:inherit;padding:8px 12px;border-radius:10px">View Projects</a>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <div style="text-align:center">
-            <div style="font-weight:800;font-size:20px;color:var(--accent)">Animated Visual</div>
- <div style="margin-top:10px;color:var(--muted)">Floating cards, animated progress and scroll reveal</div>
-          </div>
-        </div>
-      </div>
-    </section><!-- Projects -->
-<section id="projects" class="reveal">
-  <div class="section-title"><h2>Projects</h2><div class="section-meta">Work samples & featured builds</div></div>
-
-  <div class="big-boxes">
-    <div class="big-box">
-      <div class="label">Embedded YouTube</div>
-      <div style="width:100%;max-width:720px">
-        <!-- Replace the src with your YouTube embed -->
-        <div style="position:relative;padding-top:56.25%;width:100%">
-          <iframe id="yt" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video" frameborder="0" style="position:absolute;inset:0;width:100%;height:100%;border-radius:10px" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-     <div class="big-box">
-      <div class="label">Quick Links</div>
-      <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
-        <a class="btn btn--accent" id="resumeLink">Download Resume</a>
-        <a class="btn" id="demoLink" style="background:transparent;border:1px solid rgba(255,255,255,0.04)">Live Demo</a>
-        <div style="color:var(--muted);font-size:13px">Place your Google Drive resume link and other links in the script section</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="grid" style="margin-top:20px">
-    <div class="card reveal"><h3>Project A</h3><p class="muted">Short description, tech stack and link</p></div>
-    <div class="card reveal"><h3>Project B</h3><p class="muted">Short description, tech stack and link</p></div>
-    <div class="card reveal"><h3>Project C</h3><p class="muted">Short description, tech stack and link</p></div>
-  </div>
-</section>
-<!-- Experience -->
-<section id="experience" class="reveal">
-  <div class="section-title"><h2>Experience</h2><div class="section-meta">Where I've worked</div></div>
-  <div class="grid" style="margin-top:18px">
-    <div class="card reveal"><strong>Role — Company</strong><p class="muted">Short blurb about responsibilities and achievements.</p></div>
-    <div class="card reveal"><strong>Role — Company</strong><p class="muted">Short blurb about responsibilities and achievements.</p></div>
-    <div class="card reveal"><strong>Role — Company</strong><p class="muted">Short blurb about responsibilities and achievements.</p></div>
-  </div>
-</section>
-
-<!-- Certs -->
-<section id="certs" class="reveal">
-  <div class="section-title"><h2>Certs</h2><div class="section-meta">Certificates & badges</div></div>
-  <div class="grid" style="margin-top:18px">
-    <div class="card reveal">Certificate 1</div>
-    <div class="card reveal">Certificate 2</div>
-    <div class="card reveal">Certificate 3</div>
-  </div>
-</section>
-<!-- Skill -->
-<section id="skill" class="reveal">
-  <div class="section-title"><h2>Skill</h2><div class="section-meta">Technologies & proficiency</div></div>
-  <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">
-    <div class="skill"><div style="width:110px;font-weight:700">HTML/CSS</div><div class="bar"><i data-pct="95"></i></div></div>
-    <div class="skill"><div style="width:110px;font-weight:700">JavaScript</div><div class="bar"><i data-pct="88"></i></div></div>
-    <div class="skill"><div style="width:110px;font-weight:700">Linux Admin</div><div class="bar"><i data-pct="76"></i></div></div>
-    <div class="skill"><div style="width:110px;font-weight:700">Cloud & Infrastructure</div><div class="bar"><i data-pct="70"></i></div></div>
-  </div>
-</section>
-<!-- Education -->
-<section id="education" class="reveal">
-  <div class="section-title"><h2>Education</h2><div class="section-meta">Academic background</div></div>
-  <div style="margin-top:12px">
-    <div class="card reveal"><strong>S.S.C(degree) — (institue)Nabin Chandra high school & collage, Bangladesh</strong><p class="muted">(GPA 4.22/5, Devision: Science)Dates and brief info.</p></div>
-  </div>
-</section>
-
-<footer>Made with ✨ — Replace links and content with your own. Mobile menu available via "Menu" button.</footer>
- </main>  <script>
-    // ---------- CONFIGURE YOUR LINKS HERE ----------
-    const RESUME_LINK = 'https://drive.google.com/your-resume-link'; // <-- replace with your Google Drive share link
-    const LINKEDIN = 'https://www.linkedin.com/in/yourprofile';
-    const GITHUB = 'https://github.com/yourprofile';
-    // ------------------------------------------------
-
-    // smooth scroll with active nav highlighting
-    const navLinks = document.querySelectorAll('nav a');
-    const menuLinks = document.querySelectorAll('.menu-panel a');
-    const sections = document.querySelectorAll('section');
-
-    function scrollToId(id){
-      document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
-      }
- 
+  <main class="content-wrapper" data-component="main">
+    <!-- ABOUT SECTION -->
+    <article id="about" class="content-block" data-section="about">
+      <div class="accent-blob" data-decoration="blob-1"></div>
+      <div class="accent-blob" data-decoration="blob-2"></div>
       
-   document.getElementById('homeBtn').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+      <div class="block-layout">
+        <div class="block-text">
+          <header class="block-header">
+            <h2 class="block-title">About Me</h2>
+            <p class="block-subtitle">Introduction & Overview</p>
+          </header>
+          <p class="block-description">Hi — I'm <strong>Tanvir Shahriar</strong>. This is a vibrant animated portfolio showcasing my skills and projects. Explore my work, experience, and accomplishments below.</p>
+          <div class="block-actions">
+            <button class="action-btn action-btn--primary" data-action="resume">⬇️ Download Resume</button>
+          </div>
+        </div>
+        <aside class="block-visual">
+          <div class="visual-placeholder">
+            <h3 class="visual-label">Creative Portfolio</h3>
+            <p class="visual-description">Showcasing skills, projects & achievements</p>
+          </div>
+        </aside>
+      </div>
+    </article>
 
-    navLinks.forEach(a=>a.addEventListener('click',(e)=>{e.preventDefault();const t=a.getAttribute('data-target');scrollToId(t);closeMenu();}));
-    menuLinks.forEach(a=>a.addEventListener('click',(e)=>{e.preventDefault();const t=a.getAttribute('data-target');scrollToId(t);closeMenu();}));
+    <!-- WORK SECTION -->
+    <article id="work" class="content-block" data-section="work">
+      <header class="block-header">
+        <h2 class="block-title">Work</h2>
+        <p class="block-subtitle">Featured Projects & Showcases</p>
+      </header>
+      
+      <div class="work-showcase" data-layout="grid-2col">
+        <div class="work-item" data-item="project-1">
+          <div class="video-container">
+            <iframe class="embedded-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen title="Project One"></iframe>
+          </div>
+          <h3 class="work-name">Project One</h3>
+        </div>
 
-    // menu toggle for small screens
-    const menuBtn=document.getElementById('menuBtn');
-    const menuPanel=document.getElementById('menuPanel');
-    function closeMenu(){menuPanel.style.display='none';menuPanel.setAttribute('aria-hidden','true')}
-    menuBtn.addEventListener('click',()=>{
-      if(menuPanel.style.display==='block'){closeMenu()}else{menuPanel.style.display='block';menuPanel.setAttribute('aria-hidden','false')}
-    })
+        <div class="work-item" data-item="project-2">
+          <div class="video-container">
+            <iframe class="embedded-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen title="Project Two"></iframe>
+          </div>
+          <h3 class="work-name">Project Two</h3>
+        </div>
 
-    // set social links
-    document.getElementById('lnk').addEventListener('click',()=>window.open(LINKEDIN,'_blank'));
-    document.getElementById('gh').addEventListener('click',()=>window.open(GITHUB,'_blank'));
-    
-    
-    // resume button
-    document.getElementById('downloadResume').addEventListener('click',()=>window.open(RESUME_LINK,'_blank'));
-    document.getElementById('resumeLink').addEventListener('click',()=>window.open(RESUME_LINK,'_blank'));
+        <div class="work-item" data-item="project-3">
+          <div class="video-container">
+            <iframe class="embedded-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen title="Project Three"></iframe>
+          </div>
+          <h3 class="work-name">Project Three</h3>
+        </div>
 
-    // reveal on scroll
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){entry.target.classList.add('show');}
-      })
-    },{threshold:0.12});
-    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+        <div class="work-item" data-item="project-4">
+          <div class="video-container">
+            <iframe class="embedded-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen title="Project Four"></iframe>
+          </div>
+          <h3 class="work-name">Project Four</h3>
+        </div>
 
-    // animated skill bars
-    window.addEventListener('load',()=>{
-      document.querySelectorAll('.skill .bar i').forEach((el,idx)=>{
-        const pct = el.getAttribute('data-pct')||60;
-        setTimeout(()=>{el.style.width = pct + '%'; el.style.transition='width 1.6s cubic-bezier(.2,.9,.2,1)';},200+idx*200);
-      })
-    })
+        <div class="work-item" data-item="project-5">
+          <div class="video-container">
+            <iframe class="embedded-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen title="Project Five"></iframe>
+          </div>
+          <h3 class="work-name">Project Five</h3>
+        </div>
 
-    // active nav on scroll
-    const sectionOffsets = Array.from(sections).map(s=>({id:s.id,top:s.offsetTop}));
-    window.addEventListener('scroll',()=>{
-      const y = window.scrollY + (varCalcNavHeight = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height'))||72));
-      sections.forEach(s=>{
-        const el = document.getElementById(s.id);
-        if(el.offsetTop <= y && el.offsetTop + el.offsetHeight > y){
-          document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-          const link = document.querySelector('nav a[data-target="'+s.id+'"]');
-          if(link) link.classList.add('active');
+        <div class="work-item" data-item="project-6">
+          <div class="video-container">
+            <iframe class="embedded-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen title="Project Six"></iframe>
+          </div>
+          <h3 class="work-name">Project Six</h3>
+        </div>
+      </div>
+    </article>
+
+    <!-- EXPERTISE SECTION -->
+    <article id="expertise" class="content-block" data-section="expertise">
+      <header class="block-header">
+        <h2 class="block-title">Expertise</h2>
+        <p class="block-subtitle">Technical Skills & Proficiency</p>
+      </header>
+      
+      <ul class="skill-list" data-layout="stack">
+        <li class="skill-entry" data-skill="html-css">
+          <span class="skill-name">HTML/CSS</span>
+          <div class="skill-meter">
+            <div class="skill-fill" data-level="95" style="width: 0;"></div>
+          </div>
+        </li>
+        <li class="skill-entry" data-skill="javascript">
+          <span class="skill-name">JavaScript</span>
+          <div class="skill-meter">
+            <div class="skill-fill" data-level="88" style="width: 0;"></div>
+          </div>
+        </li>
+        <li class="skill-entry" data-skill="linux">
+          <span class="skill-name">Linux Admin</span>
+          <div class="skill-meter">
+            <div class="skill-fill" data-level="76" style="width: 0;"></div>
+          </div>
+        </li>
+        <li class="skill-entry" data-skill="cloud">
+          <span class="skill-name">Cloud & Infrastructure</span>
+          <div class="skill-meter">
+            <div class="skill-fill" data-level="70" style="width: 0;"></div>
+          </div>
+        </li>
+      </ul>
+    </article>
+
+    <!-- CREDENTIALS SECTION -->
+    <article id="credentials" class="content-block" data-section="credentials">
+      <header class="block-header">
+        <h2 class="block-title">Credentials</h2>
+        <p class="block-subtitle">Professional Experience & Roles</p>
+      </header>
+      
+      <div class="credentials-grid" data-layout="grid-3col">
+        <div class="credential-card" data-type="experience">
+          <h3 class="credential-title">System Administrator Assistant — School Name</h3>
+          <ul class="credential-details">
+            <li>Assisted with Windows/Linux workstation setup, Active Directory, and user account management</li>
+            <li>Supported network equipment, troubleshooting, ticket resolution, and IT support</li>
+          </ul>
+        </div>
+        
+        
+        
+        
+      </div>
+    </article>
+
+    <!-- CERTIFICATIONS SECTION -->
+    <article id="qualifications" class="content-block" data-section="qualifications">
+      <header class="block-header">
+        <h2 class="block-title">Qualifications</h2>
+        <p class="block-subtitle">Certifications & Badges</p>
+      </header>
+      
+      <div class="qualifications-grid" data-layout="grid-3col">
+        <div class="qualification-card" data-cert="comptia-a">
+          <figure class="cert-visual">
+            <img src="comptia-a-plus.jpg" alt="CompTIA A+ Certification Badge">
+            <figcaption class="cert-label">Estimated completion: 15 March 2026</figcaption>
+          </figure>
+        </div>
+        
+        
+      </div>
+    </article>
+
+    <!-- BACKGROUND SECTION -->
+    <article id="background" class="content-block" data-section="background">
+      <header class="block-header">
+        <h2 class="block-title">Background</h2>
+        <p class="block-subtitle">Academic Journey</p>
+      </header>
+      
+      <div class="education-list" data-layout="grid-2col">
+        <div class="education-card" data-grade="10th">
+          <h3 class="education-title">10th Grade — Nabin Chandra High School</h3>
+          <p class="education-date">Completion: 20 December 2024</p>
+        </div>
+        
+        <div class="education-card" data-grade="11th">
+          <h3 class="education-title">11th Grade — Nabin Chandra High School</h3>
+          <p class="education-status">Currently studying</p>
+        </div>
+      </div>
+    </article>
+
+    <footer class="site-footer" data-component="footer">
+      <p>Made with ✨ — Tanvir Shahriar Portfolio. Replace content with your own details.</p>
+    </footer>
+  </main>  <script>
+    const CONFIG = {
+      resume: 'https://drive.google.com/your-resume-link',
+      linkedin: 'https://www.linkedin.com/in/yourprofile',
+      github: 'https://github.com/yourprofile'
+    };
+
+    // Navigation
+    document.querySelectorAll('[data-nav-item]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = e.target.getAttribute('href');
+        document.querySelector(target).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Social buttons
+    document.querySelector('[data-social="linkedin"]').addEventListener('click', () => window.open(CONFIG.linkedin, '_blank'));
+    document.querySelector('[data-social="github"]').addEventListener('click', () => window.open(CONFIG.github, '_blank'));
+
+    // Resume button
+    document.querySelector('[data-action="resume"]').addEventListener('click', () => window.open(CONFIG.resume, '_blank'));
+
+    // Mobile menu
+    const menuToggle = document.querySelector('[data-element="menu-toggle"]');
+    const navMenu = document.querySelector('[data-element="nav-menu"]');
+    menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+    document.addEventListener('click', (e) => {
+      if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+        navMenu.classList.remove('active');
+      }
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('[data-section]').forEach(el => observer.observe(el));
+
+    // Active nav on scroll
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY + 80;
+      document.querySelectorAll('[data-section]').forEach(section => {
+        if (section.offsetTop <= scrollY && section.offsetTop + section.offsetHeight > scrollY) {
+          document.querySelectorAll('[data-nav-item]').forEach(link => link.parentElement.classList.remove('active'));
+          const activeLink = document.querySelector(`[data-nav-item="${section.id}"]`);
+          if (activeLink) activeLink.parentElement.classList.add('active');
         }
-      })
-    })
+      });
+    });
 
-    // tiny decorative animations for cards
-    document.querySelectorAll('.card').forEach((c,i)=>{c.style.animation = 'cardIn .6s ease '+(i*80)+'ms both'});
-    const style = document.createElement('style');style.innerHTML = '@keyframes cardIn{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}';document.head.appendChild(style);
+    // Animated skill bars
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.skill-fill').forEach((bar, idx) => {
+        const level = bar.getAttribute('data-level') || 60;
+        setTimeout(() => {
+          bar.style.width = level + '%';
+          bar.style.transition = 'width 1.6s cubic-bezier(.2,.9,.2,1)';
+        }, 200 + idx * 200);
+      });
+    });
 
-    // close menu when clicking outside
-    document.addEventListener('click',(e)=>{if(!menuPanel.contains(e.target) && !menuBtn.contains(e.target)) closeMenu()});
-
-    // accessibility: keyboard navigation for menu
-    menuBtn.addEventListener('keydown',(e)=>{if(e.key==='Enter') menuBtn.click()});
-
-    // small fallback if JS disabled: ensure anchor works
-  </script></body>
+    // Logo click to home
+    document.querySelector('[data-element="logo"]').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
 </html>
